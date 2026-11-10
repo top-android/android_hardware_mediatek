@@ -4,13 +4,13 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
-java_library {
-    name: "mediatek-common",
-    installable: true,
-    system_ext_specific: true,
-    use_generic_config: true,
-
-    srcs: [
-        "src/**/*.java",
-    ],
-}
+// cannon A16-D4：上游新增的源码版 mediatek-common（此处 java_library，仅一个类
+// OperatorCustomizationFactoryLoader）与本设备 vendor 的专有 prebuilt
+// （vendor/xiaomi/cannon/Android.bp 中 dex_import "mediatek-common"，
+//  jars: proprietary/system/framework/mediatek-common.jar）同名，导致 Kati 报
+//   MODULE.TARGET.JAVA_LIBRARIES.mediatek-common already defined by ...
+// 设备实际需要的是与专有 mediatek-framework.jar 配对的 vendor jar（A15 即用此），
+// 故停用上游源码版（不参与命名/安装），保留 vendor prebuilt 作为唯一 mediatek-common。
+// 说明：本文件上游原本仅定义该 java_library；本机无任何模块以编译依赖方式引用它，
+// 且 hardware/mediatek/frameworks/mediatek-frameworks.mk 未被本产品引入，
+// 故停用不影响编译图。需要恢复上游行为时 git checkout 本文件即可。

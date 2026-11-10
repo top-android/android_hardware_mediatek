@@ -35,10 +35,12 @@ cc_library {
         "-Wall",
         "-Wextra",
     ],
+    // A16-D11: 移除 generated_kernel_headers。它把整棵内核 uapi(含 linux/sched/types.h)
+    // 排在 bionic 之前，导致 struct sched_param 与 bionic sched.h 重定义(A16 clang 判 error)。
+    // bionic 自带 linux/ioctl.h 与 linux/rtc.h，本模块无需内核生成头；可逆。
     header_libs: [
         "jni_headers",
         "libbase_headers",
-        "generated_kernel_headers",
     ],
     shared_libs: [
         "liblog",

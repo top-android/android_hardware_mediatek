@@ -4,13 +4,13 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
-java_library {
-    name: "mediatek-telecom-common",
-    installable: true,
-    system_ext_specific: true,
-    use_generic_config: true,
-
-    srcs: [
-        "src/**/*.java",
-    ],
-}
+// cannon A16-D6：上游新增的源码版 mediatek-telecom-common（此处 java_library，仅
+// MtkVideoProfile 一个类）与本设备 vendor 的专有 prebuilt
+// （vendor/xiaomi/cannon/Android.bp 中 dex_import "mediatek-telecom-common"，
+//  jars: proprietary/system/framework/mediatek-telecom-common.jar）同名，导致 Kati 报
+//   MODULE.TARGET.JAVA_LIBRARIES.mediatek-telecom-common already defined by ...
+// 与 A16-D5（mediatek-common）完全同模式。设备实际需要的是与专有 mediatek-framework.jar
+// 配对的 vendor jar（A15 即用此），故停用上游源码版（不参与命名/安装），
+// 保留 vendor prebuilt 作为唯一 mediatek-telecom-common。
+// 说明：hardware/mediatek/frameworks/mediatek-frameworks.mk 未被本产品引入，
+// 无模块以编译依赖方式引用它，故停用不影响编译图。恢复用 git checkout 本文件。
