@@ -36,9 +36,8 @@ ndk::ScopedAStatus Vibrator::activate(const int32_t timeoutMs) {
         return off();
     }
 
-    status = setNode(kVibratorState, 1);
-    if (!status.isOk()) return status;
-
+    // [cannon] AW8622 只有 duration/activate 两个节点（没有 state）：
+    // 先写时长（ms，>=60 走 LONG 波形），再写 activate=1 触发播放。
     status = setNode(kVibratorDuration, timeoutMs);
     if (!status.isOk()) return status;
 

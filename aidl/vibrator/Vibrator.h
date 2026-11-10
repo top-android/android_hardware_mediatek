@@ -17,9 +17,12 @@ namespace vibrator {
 const std::string kVibratorPropPrefix = "ro.vendor.vibrator.hal.";
 const std::string kVibratorPropDuration = ".duration";
 
-const std::string kVibratorState = "/sys/class/leds/vibrator/state";
-const std::string kVibratorDuration = "/sys/class/leds/vibrator/duration";
-const std::string kVibratorActivate = "/sys/class/leds/vibrator/activate";
+// [cannon] cannon 的振动马达挂在 AW8622（PWM，驱动 drivers/misc/mediatek/aw8622_haptic），
+// sysfs 在 /sys/devices/platform/haptic_pwm/{duration,activate}；/sys/class/leds/vibrator 是
+// 另一颗 PMIC 振动驱动（mediatek,vibrator）注册的，写它只会在内核里打 vibr enable，马达不动作。
+// 原厂 init.mt6853.rc 里也是把 haptic_pwm 的这两个节点 chmod 0666。
+const std::string kVibratorDuration = "/sys/devices/platform/haptic_pwm/duration";
+const std::string kVibratorActivate = "/sys/devices/platform/haptic_pwm/activate";
 
 #ifdef VIBRATOR_SUPPORTS_EFFECTS
 const std::string kVibratorStrength = "/sys/class/leds/vibrator/vmax";

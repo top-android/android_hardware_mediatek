@@ -403,7 +403,14 @@ ThermalHelperImpl::ThermalHelperImpl(const NotificationCallback &cb)
             return;
         }
     } else if (!ret) {
-        LOG(FATAL) << "ThermalHAL could not be initialized properly.";
+        // [cannon][A17] 不要 abort：本服务在 vendor VINTF 里声明了
+        // android.hardware.thermal.IThermal/default，一旦进程起不来，
+        // system_server 的 ServiceManager.waitForDeclaredService() 会永久阻塞，
+        // 开机流程停在 PHASE_ACTIVITY_MANAGER_READY（卡开机动画）。
+        // 这里降级成「服务在线但 is_initialized_=false」，框架拿到
+        // EX_ILLEGAL_STATE 后按无温控处理，开机继续。
+        LOG(ERROR) << "[cannon] ThermalHAL degraded: init failed, service stays alive "
+                      "without sensor data (see errors above).";
     }
     is_initialized_ = ret;
 
