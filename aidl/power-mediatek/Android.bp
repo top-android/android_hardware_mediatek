@@ -32,6 +32,7 @@ mediatek_power_defaults {
 
 cc_binary {
     name: "android.hardware.power-service-mediatek",
+    installable: false,
     defaults: ["mediatek_power_defaults"],
     vendor: true,
     relative_install_path: "hw",

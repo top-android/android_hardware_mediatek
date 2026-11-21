@@ -32,6 +32,7 @@ android_hardware_audio_config_mediatek_default {
 
 cc_binary {
     name: "android.hardware.audio.service.mediatek",
+    installable: false,
 
     init_rc: ["android.hardware.audio.service.mediatek.rc"],
     relative_install_path: "hw",
