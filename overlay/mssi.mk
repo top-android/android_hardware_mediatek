@@ -41,3 +41,14 @@ PRODUCT_PACKAGES += \
     MssiWifiConnac3ChipsetOverlay
 endif
 endif
+
+ifneq ($(call math_gt_or_eq,$(BOARD_SHIPPING_API_LEVEL),34),)
+PRODUCT_PACKAGES += \
+    MssiWifiQoSOverlay
+endif
+
+ifneq ($(call math_gt_or_eq,$(BOARD_SHIPPING_API_LEVEL),202504),)
+PRODUCT_PACKAGES += \
+    MssiWifiCountryOverlay \
+    MssiWifiOweOverlay
+endif
